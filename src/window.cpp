@@ -1,7 +1,11 @@
 #include <time.h>
+#include <string>
+#include <iostream>
 #include "window.hpp"
 #include "cam.hpp"
 #include "map"
+
+#define	TAILLE_SPECTRE	(X + Y) / 2
 
 window::window()
 {
@@ -26,44 +30,50 @@ void	window::init()
   _app.setJoystickThreshold(100);
 }
 
-void	drow_cube(int x, int y)
+void		drow_cube(int x, int y, float spectre[TAILLE_SPECTRE], int l)
 {
-  glColor4d(255,255,255, 25);
-  glVertex3d(x + 0, y + 0, 0);
-  glVertex3d(x + 1, y + 0, 0);
-  glVertex3d(x + 1, y + 1, 0);
-  glVertex3d(x + 0, y + 1, 0);
-
-  glColor4d(0,255,0, 25);
-  glVertex3d(x + 0, y + 0, 0);
-  glVertex3d(x + 0, y + 0, 1);
-  glVertex3d(x + 1, y + 0, 1);
-  glVertex3d(x + 1, y + 0, 0);
-
-  glColor4d(0,255,0, 25);
-  glVertex3d(x + 0, y + 0, 0);
-  glVertex3d(x + 0, y + 0, 1);
-  glVertex3d(x + 0, y + 1, 1);
-  glVertex3d(x + 0, y + 1, 0);
-
+  float		hauteur;
+  int		i = 0;
+  
+  hauteur = spectre[x / 2] * l * (x * 10);
+  hauteur += spectre[y / 2] * l * (y * 10);
 
   glColor4d(255,255,255, 25);
-  glVertex3d(x + 0, y + 0, 1);
-  glVertex3d(x + 1, y + 0, 1);
-  glVertex3d(x + 1, y + 1, 1);
-  glVertex3d(x + 0, y + 1, 1);
+  glVertex3d(x + 0, y + 0, 0 + hauteur);
+  glVertex3d(x + 1, y + 0, 0 + hauteur);
+  glVertex3d(x + 1, y + 1, 0 + hauteur);
+  glVertex3d(x + 0, y + 1, 0 + hauteur);
 
   glColor4d(0,255,0, 25);
-  glVertex3d(x + 0, y + 1, 0);
-  glVertex3d(x + 0, y + 1, 1);
-  glVertex3d(x + 1, y + 1, 1);
-  glVertex3d(x + 1, y + 1, 0);
+  glVertex3d(x + 0, y + 0, 0 + hauteur);
+  glVertex3d(x + 0, y + 0, 1 + hauteur);
+  glVertex3d(x + 1, y + 0, 1 + hauteur);
+  glVertex3d(x + 1, y + 0, 0 + hauteur);
 
   glColor4d(0,255,0, 25);
-  glVertex3d(x + 1, y + 0, 0);
-  glVertex3d(x + 1, y + 0, 1);
-  glVertex3d(x + 1, y + 1, 1);
-  glVertex3d(x + 1, y + 1, 0);
+  glVertex3d(x + 0, y + 0, 0 + hauteur);
+  glVertex3d(x + 0, y + 0, 1 + hauteur);
+  glVertex3d(x + 0, y + 1, 1 + hauteur);
+  glVertex3d(x + 0, y + 1, 0 + hauteur);
+
+
+  glColor4d(255,255,255, 25);
+  glVertex3d(x + 0, y + 0, 1 + hauteur);
+  glVertex3d(x + 1, y + 0, 1 + hauteur);
+  glVertex3d(x + 1, y + 1, 1 + hauteur);
+  glVertex3d(x + 0, y + 1, 1 + hauteur);
+
+  glColor4d(0,255,0, 25);
+  glVertex3d(x + 0, y + 1, 0 + hauteur);
+  glVertex3d(x + 0, y + 1, 1 + hauteur);
+  glVertex3d(x + 1, y + 1, 1 + hauteur);
+  glVertex3d(x + 1, y + 1, 0 + hauteur);
+
+  glColor4d(0,255,0, 25);
+  glVertex3d(x + 1, y + 0, 0 + hauteur);
+  glVertex3d(x + 1, y + 0, 1 + hauteur);
+  glVertex3d(x + 1, y + 1, 1 + hauteur);
+  glVertex3d(x + 1, y + 1, 0 + hauteur);
 }
 
 void	clown(map &map)
@@ -115,7 +125,7 @@ void	clear(map &map)
     }
 }
 
-void	drow(cam cam, map map)
+void	drow(cam cam, map map, float spectre[TAILLE_SPECTRE], int l)
 {
   int	x, y = 0;
 
@@ -131,7 +141,7 @@ void	drow(cam cam, map map)
       while (x < X)
 	{
 	  if (map.get_life(x, y))
-	    drow_cube(x, y);
+	    drow_cube(x, y, spectre, l);
 	  x++;
 	}
       y++;
@@ -140,7 +150,7 @@ void	drow(cam cam, map map)
   glFlush();
 }
 
-void	catch_event(sf::RenderWindow &_app, sf::Event &event, cam &cam, map &map, int &vitesse)
+void	catch_event(sf::RenderWindow &_app, sf::Event &event, cam &cam, map &map, int &vitesse, int &l)
 {
   while (_app.pollEvent(event))
     {
@@ -190,19 +200,41 @@ void	catch_event(sf::RenderWindow &_app, sf::Event &event, cam &cam, map &map, i
 	    random(map);
 	  else if (event.key.code == sf::Keyboard::C)
 	    clear(map);
+	  else if (event.key.code == sf::Keyboard::P)
+	    l++;
+	  else if (event.key.code == sf::Keyboard::M)
+	    l--;
+	  else if (event.key.code == sf::Keyboard::O)
+	    l = 0;
 	}
     }
 }
 
-void		window::start()
+void		window::start(char name[256])
 {
   sf::Event	event;
   cam		cam;
   map		map;
+  float		spectre[TAILLE_SPECTRE];
   int		time = 0;
   int		vitesse = 10;
+  int		l = 10;
 
-  cam.set_ccam(X/2 + 10,Y/2 + 10,10);
+  FMOD_SYSTEM *system;
+  FMOD_SOUND *musique;
+  FMOD_CHANNEL *canal;
+  FMOD_RESULT resultat;
+  FMOD_System_Create(&system);
+  FMOD_System_Init(system, 1, FMOD_INIT_NORMAL, NULL); 
+  resultat = FMOD_System_CreateSound(system, name, FMOD_SOFTWARE | FMOD_2D | FMOD_CREATESTREAM, 0, &musique);
+  if (resultat != FMOD_OK)
+    {
+      fprintf(stderr, "Impossible de lire le fichier mp3\n");
+      exit(EXIT_FAILURE);
+    }
+  FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, musique, 0, NULL);
+  FMOD_System_GetChannel(system, 0, &canal);
+  cam.set_ccam(X/2 + 30,Y/2 + 30,30);
   while (_app.isOpen())
     {
       if (time > vitesse)
@@ -210,9 +242,10 @@ void		window::start()
 	  map.refresh();
 	  time = 0;
 	}
+      FMOD_Channel_GetSpectrum(canal, spectre, TAILLE_SPECTRE, 0,  FMOD_DSP_FFT_WINDOW_RECT);
       time++;
-      catch_event(_app, event, cam, map, vitesse);
-      drow(cam, map);
+      catch_event(_app, event, cam, map, vitesse, l);
+      drow(cam, map, spectre, l);
       _app.display();
     }
 }

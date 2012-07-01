@@ -2,11 +2,11 @@ Keycode :		|
 			|
 Space	-> start/stop	|
 Escape	-> exit		|
-Up	-> speed++	|
-Down	-> speed--	|
 i	-> clown	|
 r	-> random	|
 c	-> clear	|
-a,z,e,s	-> moov		|
+p	-> sound++	|
+m	-> sound--	|
+o	-> sound = 0	|
 			|
 ------------------------o

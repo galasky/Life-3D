@@ -5,14 +5,14 @@
 ## Login   <teisse_l@epitech.net>
 ## 
 ## Started on  Wed Jan 25 01:05:57 2012 lambert teisserenc-bonesteve
-## Last update Sat Jun 30 17:00:40 2012 lambert teisserenc-bonesteve
+## Last update Sun Jul  1 18:23:09 2012 lambert teisserenc-bonesteve
 ##
 
 NAME		=	life-3d
 
 CXXFLAGS	=	-I include/ -Wextra -Wall
 
-LDFLAGS		=	-lsfml-window -lsfml-graphics -lsfml-audio -lGL -lGLU -lm
+LDFLAGS		=	-lsfml-window -lsfml-graphics -lsfml-audio -lGL -lGLU -lfmodex -lm
 
 CC		=	g++
 RM		=	rm -fv

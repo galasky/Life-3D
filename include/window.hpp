@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fmodex/fmod.h>
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -21,7 +22,7 @@ public:
   ~window();
   void	init();
   void	load();
-  void	start();
+  void	start(char name[256]);
 
 private:
 

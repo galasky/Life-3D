@@ -1,13 +1,18 @@
 #include <iostream>
+#include <stdlib.h>
 #include "map.hpp"
 
 map::map()
 {
   int	x, y = 0;
 
+  _new_zone = new int*[Y];
+  _old_zone = new int*[Y];
   while (y < Y)
     {
       x = 0;
+      _new_zone[y] = new int[X];
+      _old_zone[y] = new int[X];
       while (x < X)
 	{
 	  _new_zone[y][x] = 0;
@@ -29,7 +34,7 @@ map::~map()
 
 }
 
-void	algo_life(int oz[Y][X], int nz[Y][X], int x, int y)
+void	algo_life(int **oz, int **nz, int x, int y)
 {
   int	c = 0;
 
@@ -68,7 +73,7 @@ void	algo_life(int oz[Y][X], int nz[Y][X], int x, int y)
     nz[y][x] = 0;
 }
 
-void	cp_zone(int oz[Y][X], int nz[Y][X])
+void	cp_zone(int **oz, int **nz)
 {
   int	x, y = 0;
 

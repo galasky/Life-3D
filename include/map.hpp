@@ -1,8 +1,8 @@
 #ifndef	__MAP_HPP__
 #define	__MAP_HPP__
 
-#define	X	600
-#define	Y	600
+#define	X	512
+#define	Y	512
 
 class	map
 {
@@ -18,8 +18,8 @@ public:
 private:
 
   int	_start;
-  int	_new_zone[Y][X];
-  int	_old_zone[Y][X];
+  int	**_new_zone;
+  int	**_old_zone;
 };
 
 #endif
