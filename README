@@ -5,8 +5,11 @@ Escape	-> exit		|
 i	-> clown	|
 r	-> random	|
 c	-> clear	|
+azes	-> moov		|
 p	-> sound++	|
 m	-> sound--	|
 o	-> sound = 0	|
 			|
 ------------------------o
+
+Put your Music in folder...
