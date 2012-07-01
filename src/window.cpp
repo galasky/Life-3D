@@ -35,8 +35,8 @@ void		drow_cube(int x, int y, float spectre[TAILLE_SPECTRE], int l)
   float		hauteur;
   int		i = 0;
   
-  hauteur = spectre[x / 2] * l * (x * 10);
-  hauteur += spectre[y / 2] * l * (y * 10);
+  hauteur = spectre[x / 2] * l * (x / 10);
+  hauteur += spectre[y / 2] * l * (y / 10);
 
   glColor4d(255,255,255, 25);
   glVertex3d(x + 0, y + 0, 0 + hauteur);
