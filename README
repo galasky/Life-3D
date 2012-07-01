@@ -2,6 +2,8 @@ Keycode :		|
 			|
 Space	-> start/stop	|
 Escape	-> exit		|
+Up	-> speed++	|
+Down	-> speed--	|
 i	-> clown	|
 r	-> random	|
 c	-> clear	|
