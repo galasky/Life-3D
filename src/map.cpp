@@ -20,7 +20,7 @@ map::map()
 	}
       y++;
     }
-  _start = 0;
+  _start = 1;
   _new_zone[Y/2 + 4][X/2 + 4] = 1;
   _new_zone[Y/2 + 4][X/2 + 5] = 1;
   _new_zone[Y/2 + 4][X/2 + 6] = 1;
