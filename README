@@ -1,15 +1,22 @@
-Keycode :		|
-			|
-Space	-> start/stop	|
-Escape	-> exit		|
-i	-> clown	|
-r	-> random	|
-c	-> clear	|
-p	-> sound++	|
-m	-> sound--	|
-o	-> sound = 0	|
-			|
-------------------------o
+Attention! Il faut avoir présent les
+librairies suivantes : 
+sfml
+fmodex
+OpenGL
+
+o-----------------------o
+|Keycode :		|
+|			|
+|Space	-> start/stop	|
+|Escape	-> exit		|
+|i	-> clown	|
+|r	-> random	|
+|c	-> clear	|
+|p	-> sound++	|
+|m	-> sound--	|
+|o	-> sound = 0	|
+|			|
+o-----------------------o
 
 Description :
 
