@@ -10,3 +10,15 @@ m	-> sound--	|
 o	-> sound = 0	|
 			|
 ------------------------o
+
+Description :
+
+Life-3D est un programme complètement inutil
+qui va vous éblouir les yeux d'un superbe 
+univers en 3D fait en OpenGL (attention hein!)
+
+Cet univers est tout simplement un jeu de la
+vie (Game Of Life pour les puristes) qui va
+danser la samba sur un air de musique que
+vous aurez préalablement choisi en indiquant
+sont chemin.
