@@ -5,8 +5,5 @@ Escape	-> exit		|
 i	-> clown	|
 r	-> random	|
 c	-> clear	|
-p	-> sound++	|
-m	-> sound--	|
-o	-> sound = 0	|
 			|
 ------------------------o
