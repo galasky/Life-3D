@@ -22,10 +22,12 @@ public:
   ~window();
   void	init();
   void	load();
-  void	start(char name[256]);
+  void	start();
 
 private:
 
+  GLuint		tex;
+  bool			**_map;
   sf::RenderWindow	_app;
   sf::Event		_event;
   sf::Music		_music;

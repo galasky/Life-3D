@@ -1,3 +1,4 @@
+#include <sdlglutils.h>
 #include <time.h>
 #include <string>
 #include <iostream>
@@ -25,6 +26,8 @@ void	window::init()
   glLoadIdentity();
   gluPerspective(70, (double) _size_x / _size_y, 0.01, 10000);
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_TEXTURE_2D);
+  tex = loadTexture("floor.jpg");
   _app.setFramerateLimit(60);
   _app.setVerticalSyncEnabled(true);
   _app.setJoystickThreshold(100);
@@ -131,16 +134,22 @@ void	clear(map &map)
     }
 }
 
-void	drow(cam cam, map map, float spectre[TAILLE_SPECTRE], int l)
+void	drow(cam cam, map map, float spectre[TAILLE_SPECTRE], int l, GLuint tex)
 {
   int	x, y = 0;
-
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(cam.get_ccam().x, cam.get_ccam().y, cam.get_ccam().z, Y/2, X/2, 0, 0, 0, 1);
+  gluLookAt(cam.get_c().x, cam.get_c().y, cam.get_c().z, cam.look().x, cam.look().y, cam.look().z, 0, 0, 1);
   glBegin(GL_QUADS);
+
+  glColor4d(255,255,255, 25);
+  glBindTexture(GL_TEXTURE_2D, tex);
+  glTexCoord2i(0,0);		glVertex3d(0,0,0);
+  glTexCoord2i(X,0);		glVertex3d(X,0,0);
+  glTexCoord2i(X,Y);		glVertex3d(X,Y,0);
+  glTexCoord2i(0,Y);		glVertex3d(0,Y,0);
   while (y < Y)
     {
       x = 0;
@@ -156,49 +165,41 @@ void	drow(cam cam, map map, float spectre[TAILLE_SPECTRE], int l)
   glFlush();
 }
 
-void	catch_event(sf::RenderWindow &_app, sf::Event &event, cam &cam, map &map, int &vitesse, int &l)
+void	catch_event(sf::RenderWindow &_app, sf::Event &event, cam &cam, map &map, int &vitesse, int &l, std::vector<bool> &key, std::vector<bool> &mouse)
 {
   while (_app.pollEvent(event))
     {
       if (event.type == sf::Event::Closed)
 	_app.close();
-      if (event.type == sf::Event::KeyPressed)
-	{
-	  if (event.key.code == sf::Keyboard::Escape)
-	    _app.close();
-	  else if (event.key.code == sf::Keyboard::A)
-	    {
-	      sf::Vector3f	f;
-
-	      f = cam.get_ccam();
-	      cam.set_ccam(f.x + 1, f.y + 1, f.z + 1);
-	    }
-	  else if (event.key.code == sf::Keyboard::E)
-	    {
-	      sf::Vector3f	f;
-
-	      f = cam.get_ccam();
-	      cam.set_ccam(f.x - 1, f.y - 1, f.z - 1);
-	    }
-	  else if (event.key.code == sf::Keyboard::Z)
-	    {
-	      sf::Vector3f	f;
-
-	      f = cam.get_ccam();
-	      cam.set_ccam(f.x, f.y, f.z + 1);
-	    }
-	  else if (event.key.code == sf::Keyboard::S)
-	    {
-	      sf::Vector3f	f;
-
-	      f = cam.get_ccam();
-	      cam.set_ccam(f.x, f.y, f.z - 1);
-	    }
+      else if (event.type == sf::Event::KeyPressed)
+        {
+          if (event.key.code == sf::Keyboard::Escape)
+            _app.close();
+          else if (event.key.code == sf::Keyboard::Up)
+            key[0] = true;
+          else if (event.key.code == sf::Keyboard::Down)
+            key[1] = true;
+          else if (event.key.code == sf::Keyboard::Left)
+            key[2] = true;
+          else if (event.key.code == sf::Keyboard::Right)
+            key[3] = true;
+          else if (event.key.code == sf::Keyboard::Z)
+            key[4] = true;
+          else if (event.key.code == sf::Keyboard::S)
+            key[5] = true;
+          else if (event.key.code == sf::Keyboard::Q)
+            key[6] = true;
+          else if (event.key.code == sf::Keyboard::D)
+            key[7] = true;
+          else if (event.key.code == sf::Keyboard::A)
+            key[8] = true;
+          else if (event.key.code == sf::Keyboard::E)
+            key[9] = true;
 	  else if (event.key.code == sf::Keyboard::Space)
 	    map.pause();
-	  else if (event.key.code == sf::Keyboard::Up)
+	  else if (event.key.code == sf::Keyboard::V)
 	    vitesse--;
-	  else if (event.key.code == sf::Keyboard::Down)
+	  else if (event.key.code == sf::Keyboard::B)
 	    vitesse++;
 	  else if (event.key.code == sf::Keyboard::I)
 	    clown(map);
@@ -212,35 +213,150 @@ void	catch_event(sf::RenderWindow &_app, sf::Event &event, cam &cam, map &map, i
 	    l--;
 	  else if (event.key.code == sf::Keyboard::O)
 	    l = 0;
-	}
+        }
+      else if (event.type == sf::Event::KeyReleased)
+        {
+          if (event.key.code == sf::Keyboard::Up)
+            key[0] = false;
+          else if (event.key.code == sf::Keyboard::Down)
+            key[1] = false;
+          else if (event.key.code == sf::Keyboard::Left)
+            key[2] = false;
+          else if (event.key.code == sf::Keyboard::Right)
+            key[3] = false;
+          else if (event.key.code == sf::Keyboard::Z)
+            key[4] = false;
+          else if (event.key.code == sf::Keyboard::S)
+            key[5] = false;
+          else if (event.key.code == sf::Keyboard::Q)
+            key[6] = false;
+          else if (event.key.code == sf::Keyboard::D)
+            key[7] = false;
+          else if (event.key.code == sf::Keyboard::A)
+            key[8] = false;
+          else if (event.key.code == sf::Keyboard::E)
+            key[9] = false;
+        }
+      if (event.type == sf::Event::MouseButtonPressed)
+        {
+          if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            mouse[0] = true;
+          else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+            mouse[1] = true;
+        }
+      if (event.type == sf::Event::MouseButtonReleased)
+        {
+          mouse[0] = false;
+          mouse[1] = false;
+        }
+      if (event.type == sf::Event::MouseMoved)
+        {
+
+        }
     }
 }
 
-void		window::start(char name[256])
+void    key_action(std::vector<bool> key, cam &cam)
+{
+  if (key[0])
+    {
+      cam.look_down(0.1);
+    }
+  if (key[1])
+    {
+      cam.look_up(0.1);
+    }
+  if (key[2])
+    {
+      cam.look_right(0.1);
+    }
+  if (key[3])
+    {
+      cam.look_left(0.1);
+    }
+  if (key[4])
+    {
+      cam.advance(0.5);
+    }
+  if (key[5])
+    {
+      cam.back(0.5);
+    }
+  if (key[6])
+    {
+      cam.right(0.5);
+    }
+  if (key[7])
+    {
+      cam.left(0.5);
+    }
+  if (key[8])
+    {
+      cam.up(0.5);
+    }
+  if (key[9])
+    {
+      cam.down(0.5);
+    }
+}
+
+int     add_cube(sf::Vector3f v, sf::Vector3f c, map &_map, int mx, int my)
+{
+  float k;
+  sf::Vector2i p;
+
+  if (-1 * v.z + 0 == 0)
+    return (0);
+  else
+    k = (-1 * c.z + 0) / (-1 * (-1 * v.z));
+  p.x = v.x * k + c.x;
+  p.y = v.y * k + c.y;
+  if (p.x >= 0 && p.x < mx && p.y >= 0 && p.y < my)
+    _map.set(p.x, p.y, 1);
+}
+
+int     delet_cube(sf::Vector3f v, sf::Vector3f c, map &_map, int mx, int my)
+{
+  float k;
+  sf::Vector2i p;
+
+  if (-1 * v.z + 0 == 0)
+    return (0);
+  else
+    k = (-1 * c.z + 0) / (-1 * (-1 * v.z));
+  p.x = v.x * k + c.x;
+  p.y = v.y * k + c.y;
+  time_t t = time(NULL);  if (p.x >= 0 && p.x < mx && p.y >= 0 && p.y < my)
+    _map.set(p.x, p.y, 0);
+}
+
+void    mouse_action(std::vector<bool> mouse, int mx, int my, sf::Vector3f v, sf::Vector3f c, map &_map)
+{
+  if (mouse[0])
+    add_cube(v, c, _map, mx, my);
+  if (mouse[1])
+    delet_cube(v,c,_map,mx,my);
+}
+
+void		window::start()
 {
   sf::Event	event;
+  std::vector<bool>     key;
+  std::vector<bool>     mouse;
   cam		cam;
   map		map;
   float		spectre[TAILLE_SPECTRE];
   int		time = 0;
   int		vitesse = 10;
   int		l = 2;
+  int		i = -1;
 
-  FMOD_SYSTEM *system;
-  FMOD_SOUND *musique;
-  FMOD_CHANNEL *canal;
-  FMOD_RESULT resultat;
-  FMOD_System_Create(&system);
-  FMOD_System_Init(system, 1, FMOD_INIT_NORMAL, NULL); 
-  resultat = FMOD_System_CreateSound(system, name, FMOD_SOFTWARE | FMOD_2D | FMOD_CREATESTREAM, 0, &musique);
-  if (resultat != FMOD_OK)
-    {
-      fprintf(stderr, "Impossible de lire le fichier mp3\n");
-      exit(EXIT_FAILURE);
-    }
-  FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, musique, 0, NULL);
-  FMOD_System_GetChannel(system, 0, &canal);
-  cam.set_ccam(X/2 + 30,Y/2 + 30,30);
+  while (++i < 10)
+    key.push_back(false);
+  i = -1;
+  while (++i < 3)
+    mouse.push_back(false);
+  cam.set_c(X/2 + 30,Y/2 + 30,30);
   while (_app.isOpen())
     {
       if (time > vitesse)
@@ -248,10 +364,11 @@ void		window::start(char name[256])
 	  map.refresh();
 	  time = 0;
 	}
-      FMOD_Channel_GetSpectrum(canal, spectre, TAILLE_SPECTRE, 0,  FMOD_DSP_FFT_WINDOW_RECT);
       time++;
-      catch_event(_app, event, cam, map, vitesse, l);
-      drow(cam, map, spectre, l);
+      catch_event(_app, event, cam, map, vitesse, l, key, mouse);
+      key_action(key, cam);
+      mouse_action(mouse, X, Y, cam.get_v(), cam.get_c(), map);
+      drow(cam, map, spectre, l, tex);
       _app.display();
     }
 }

@@ -4,11 +4,8 @@
 int		main()
 {
   window	window;
-  char		name[256];
 
-  std::cout << "music : ";
-  std::cin >> name;
   window.init();
-  window.start(name);
+  window.start();
   return (0);
 }
