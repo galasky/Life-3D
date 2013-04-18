@@ -1,5 +1,6 @@
 #include <math.h>
 #include "cam.hpp"
+#include <iostream>
 
 #define	PI	3.14159265
 
@@ -133,7 +134,7 @@ void		cam::left(double k)
   sf::Vector3f	t;
 
   t = _vi;
-  rotation_z(-PI / 2, t);
+  rotation_z(PI / 2, t);
   rotation_x(_r.x, t);
   rotation_y(_r.y, t);
   rotation_z(_r.z, t);
@@ -148,7 +149,7 @@ void		cam::right(double k)
   sf::Vector3f	t;
 
   t = _vi;
-  rotation_z(PI / 2, t);
+  rotation_z(-PI / 2, t);
   rotation_x(_r.x, t);
   rotation_y(_r.y, t);
   rotation_z(_r.z, t);
@@ -184,7 +185,9 @@ void		cam::down(double k)
 
 void		cam::look_up(double a)
 {
-  _r.x -= a;
+  _r.x += a;
+  if (_r.x >= PI / 2)
+    _r.x = PI / 2 - 0.001;
   _v = _vi;
   rotation_x(_r.x, _v);
   rotation_y(_r.y, _v);
@@ -193,7 +196,9 @@ void		cam::look_up(double a)
 
 void		cam::look_down(double a)
 {
-  _r.x += a;
+  _r.x -= a;
+  if (_r.x <= -PI / 2)
+    _r.x = -PI / 2 + 0.001;
   _v = _vi;
   rotation_x(_r.x, _v);
   rotation_y(_r.y, _v);
@@ -202,7 +207,7 @@ void		cam::look_down(double a)
 
 void		cam::look_left(double a)
 {
-  _r.z -= a;
+  _r.z += a;
   _v = _vi;
   rotation_x(_r.x, _v);
   rotation_y(_r.y, _v);
@@ -211,7 +216,7 @@ void		cam::look_left(double a)
 
 void		cam::look_right(double a)
 {
-  _r.z += a;
+  _r.z -= a;
   _v = _vi;
   rotation_x(_r.x, _v);
   rotation_y(_r.y, _v);

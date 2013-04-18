@@ -260,19 +260,19 @@ void    key_action(std::vector<bool> key, cam &cam)
 {
   if (key[0])
     {
-      cam.look_down(0.1);
+      cam.look_up(0.1);
     }
   if (key[1])
     {
-      cam.look_up(0.1);
+      cam.look_down(0.1);
     }
   if (key[2])
     {
-      cam.look_right(0.1);
+      cam.look_left(0.1);
     }
   if (key[3])
     {
-      cam.look_left(0.1);
+      cam.look_right(0.1);
     }
   if (key[4])
     {
@@ -284,11 +284,11 @@ void    key_action(std::vector<bool> key, cam &cam)
     }
   if (key[6])
     {
-      cam.right(0.5);
+      cam.left(0.5);
     }
   if (key[7])
     {
-      cam.left(0.5);
+      cam.right(0.5);
     }
   if (key[8])
     {
