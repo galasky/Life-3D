@@ -12,7 +12,7 @@ NAME		=	life-3d
 
 CXXFLAGS	=	-I include/ -Wextra -Wall
 
-LDFLAGS		=	-lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio -lGL -lGLU -lm -lSDL -lSDL_image -L/usr/lib/libfmod.so
+LDFLAGS		=	ibsfml-system.so.2.5: error adding symbols: DSO missing from command line-lsfml-window -lsfml-graphics -lsfml-audio -lGL -lGLU -lm -lSDL -lSDL_image -L/usr/lib/libfmod.so
 
 CC		=	g++
 
